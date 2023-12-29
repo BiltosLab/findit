@@ -7,7 +7,8 @@ void parsedirs(char *dirname, char *searchkey, char *ignore, bool SKIPHIDDEN)
     DIR *d;
     struct dirent *dir;
     struct stat fileInfo;
-
+    char ignorearg[24];
+    bool ignored = strcmp(ignore,"");
     d = opendir(dirname);
     if (d)
     {
@@ -34,12 +35,12 @@ void parsedirs(char *dirname, char *searchkey, char *ignore, bool SKIPHIDDEN)
                     continue;
                 }
                 if (S_ISDIR(fileInfo.st_mode))
-                {   
-                    if (strstr(stream,ignore)!=NULL)
+                {
+                    if (ignored && strstr(stream, ignore) != NULL)
                     {
                         continue;
                     }
-                    
+
                     if (strstr(stream, searchkey) != NULL)
                     {
                         printf("Found %s at \t", searchkey);

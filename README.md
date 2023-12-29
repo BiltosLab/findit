@@ -15,6 +15,10 @@ Example:
 ``` findit . findit ```
 
 ## Build and Install:
+Only unixlike OSes are supported i dont use windows 
+this was not tested on anything other than arch linux but it should work on MacOS and BSDs
+GCC and Make are required to build
+
 Build with ```make all```
 
 Then install with:
