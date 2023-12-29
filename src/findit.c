@@ -1,13 +1,8 @@
-#include <stdio.h>
 #include "findit.h"
-#include <string.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <unistd.h>
+
 // #define PATH_MAX 1024 * 1024
 
-void parsedirs(char *dirname, char *searchkey)
+void parsedirs(char *dirname, char *searchkey, char *ignore, bool SKIPHIDDEN)
 {
     DIR *d;
     struct dirent *dir;
@@ -24,11 +19,8 @@ void parsedirs(char *dirname, char *searchkey)
             char *stream = dir->d_name;
             snprintf(fullPath, sizeof(fullPath), "%s/%s", dirname, stream);
             realpath(fullPath, resolvedPath); // Use realpath to handle symbolic links
-            
 
-
-
-            if (strcmp(stream, ".") == 0 || strcmp(stream, "..") == 0 || strncmp(stream, ".", 1) == 0 )
+            if (strcmp(stream, ".") == 0 || strcmp(stream, "..") == 0 || (SKIPHIDDEN ? strncmp(stream, ".", 1) == 0 : 0))
             {
                 continue;
             }
@@ -37,18 +29,23 @@ void parsedirs(char *dirname, char *searchkey)
             {
                 if (S_ISLNK(fileInfo.st_mode))
                 {
-                    
+
                     printf("ENOUGHHHH!");
                     continue;
                 }
                 if (S_ISDIR(fileInfo.st_mode))
-                {
+                {   
+                    if (strstr(stream,ignore)!=NULL)
+                    {
+                        continue;
+                    }
+                    
                     if (strstr(stream, searchkey) != NULL)
                     {
                         printf("Found %s at \t", searchkey);
                         printf("%s\n", fullPath);
                         snprintf(Foundaddr, sizeof(Foundaddr), "%s", fullPath);
-                        //printf("FOUNDADDR %s\n", Foundaddr);
+                        // printf("FOUNDADDR %s\n", Foundaddr);
                     }
                     else if (strstr(Foundaddr, fullPath) != NULL)
                     {
@@ -56,7 +53,7 @@ void parsedirs(char *dirname, char *searchkey)
                         continue;
                     }
 
-                    parsedirs(fullPath, searchkey);
+                    parsedirs(fullPath, searchkey, ignore, SKIPHIDDEN);
                 }
                 else if (S_ISREG(fileInfo.st_mode))
                 {
@@ -66,7 +63,7 @@ void parsedirs(char *dirname, char *searchkey)
                         printf("Found %s at \t", searchkey);
                         printf("%s\n", fullPath);
                         snprintf(Foundaddr, sizeof(Foundaddr), "%s", fullPath);
-                      //  printf("FOUNDADDR %s\n", Foundaddr);
+                        //  printf("FOUNDADDR %s\n", Foundaddr);
                     }
                     else if (strstr(Foundaddr, fullPath) != NULL)
                     {
@@ -94,13 +91,34 @@ void parsedirs(char *dirname, char *searchkey)
 
 int main(int argc, char *argv[])
 {
-    if (argc < 3)
+
+    if (argc == 3)
     {
-        printf("Usage findit <PATH> <KEYWORD>\n ");
-        printf("Provide both args!!\n ");
+        parsedirs(argv[1], argv[2], "", 1);
         return 0;
     }
-    parsedirs(argv[1], argv[2]);
+    if (argc == 4)
+    {
+        parsedirs(argv[1], argv[2], argv[3], 1);
+        return 0;
+    }
+    if (argc == 5 && strcmp("-sh", argv[4]) == 0)
+    {
+        parsedirs(argv[1], argv[2], argv[3], 0);
+        return 0;
+    }
+
+    if (argc < 3 || argc > 3)
+    {
+
+        if (argc == 2 && strcmp("-version", argv[1]) == 0)
+        {
+            printf("%s\n", FINDITVERSION);
+            return 0;
+        }
+
+        printf("Usage findit <PATH> <KEYWORD> <Ignore DIR/FILE> <-sh Search hidden by default hidden files are skipped>\nOR findit -version \nMinimum usage findit <PATH> <KEYWORD> \n");
+    }
 
     return 0;
 }
