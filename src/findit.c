@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 {
     if (argc < 3)
     {
-        printf("Usage /findit <PATH> <KEYWORD>\n ");
+        printf("Usage findit <PATH> <KEYWORD>\n ");
         printf("Provide both args!!\n ");
         return 0;
     }
