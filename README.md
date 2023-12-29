@@ -5,12 +5,19 @@ and this was born from that with a few tweaks to the code it works well for now
 
 ## Usage:
 
-``` findit <PATH> <KEYWORD>  ```
+```
+Usage findit <PATH> <KEYWORD> <Ignore DIR/FILE> < -sh Search hidden by default hidden files are skipped>
+OR findit -version 
+Minimum usage findit <PATH> <KEYWORD>
+```
 
 Example:
 ``` findit . findit ```
 
-## Install:
+## Build and Install:
+Build with ```make all```
+
+Then install with:
 ``` sudo chmod +x install.sh && ./install.sh```
 
 ### IM IN LOVE WITH C 
