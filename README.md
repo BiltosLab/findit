@@ -5,10 +5,10 @@ and this was born from that with a few tweaks to the code it works well for now
 
 ## Usage:
 
-``` ./findit <PATH> <KEYWORD>  ```
+``` findit <PATH> <KEYWORD>  ```
 
 Example:
-``` ./findit . findit ```
+``` findit . findit ```
 
 ## Install:
 ``` sudo chmod +x install.sh && ./install.sh```
