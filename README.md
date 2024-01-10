@@ -1,7 +1,9 @@
 # Findit
 
-this stupid simple app came when i was in process of developing a basic git like clone (will be made public soon) and i made a parser that parses the whole directory recursively and prints everything
-and this was born from that with a few tweaks to the code it works well for now 
+this stupid simple app does exactly what ```find``` does on unix systems it came to live when i was in process of developing a basic git like clone (will be made public soon) and i made a parser that parses the whole directory recursively sadly its slow when using in huge dirs etc but for normal use it functions almost like ```find``` in unix systems.
+
+this was meant to be educational nothing more nothing less.
+
 
 ## Usage:
 
@@ -24,4 +26,3 @@ Build with ```make all```
 Then install with:
 ``` sudo chmod +x install.sh && ./install.sh```
 
-### IM IN LOVE WITH C 
